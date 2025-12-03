@@ -1,3 +1,5 @@
+#LLMs for Automated Text Analysis in the Digital Humanities
+
 ## Digitization Pipeline
 
 The digitization of historical texts is one of the central and at the same time most demanding tasks in the Digital Humanities. The path from a physical document to a machine-readable digital version consists of many coordinated steps: from scanning the pages to OCR analysis (Optical Character Recognition, i.e., automatic character recognition), error correction, normalization, and finally the extraction of relevant information.
