@@ -1,4 +1,4 @@
-#LLMs for Automated Text Analysis in the Digital Humanities
+# LLMs for Automated Text Analysis in the Digital Humanities
 
 ## Digitization Pipeline
 
