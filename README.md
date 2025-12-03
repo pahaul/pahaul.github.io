@@ -1,14 +1,14 @@
 # LLMs for Automated Text Analysis in the Digital Humanities
 
-## Digitization Pipeline
+## Introduction: Digitizing Historical Texts
 
-The digitization of historical texts is one of the central and at the same time most demanding tasks in the Digital Humanities. The path from a physical document to a machine-readable digital version consists of many coordinated steps: from scanning the pages to OCR analysis (Optical Character Recognition, i.e., automatic character recognition), error correction, normalization, and finally the extraction of relevant information.
+The digitization of historical texts is one of the central and at the same time most demanding tasks in the Digital Humanities. The path from a physical document to a machine-readable digital version involves a series of coordinated steps: scanning the pages, performing OCR (Optical Character Recognition), correcting errors, normalizing historical spellings, and processing the text at the word level (e.g., tokenization or lemmatization) before it can be used for further analysis.
 The goal of this pipeline is to enable distant reading – an approach in which large text corpora are analyzed automatically without researchers having to manually read every page. This is essential for extensive source collections.
 
 (Illustration)
 
-Many of the required steps are complicated, error-prone, and require either specialized technical knowledge or substantial resources. OCR analysis of historical prints is particularly challenging because:
-- typefaces vary
+Many of the required steps are complicated, error-prone, and require either specialized technical knowledge or substantial resources. The digitization of historical prints is particularly challenging for several reasons:
+- outdated and inconsistent spelling conventions
 - print quality fluctuates
 - suitable training data are rarely available
 As a result, source-specific adjustments often have to be developed.
@@ -20,37 +20,42 @@ My master’s thesis examines the extent to which this theoretical potential can
 
 Three core tasks were investigated:
 - OCR analysis: extracting text directly from page scans
-- Orthographic normalization of historical texts
-- Named Entity Recognition (NER): identifying personal and place names
-Two strict constraints applied:
-- Only prompt engineering, no model training (Prompt engineering = formulating optimized input instructions for LLMs)
-- Use of small models that run on standard consumer hardware (e.g., models up to about 10–12 billion parameters)
-These constraints simulate conditions where projects can be carried out even without extensive technical know-how or computational power, as is often the case in the humanities.
+- Orthographic normalization of historical texts: modernizing and unifying outdated or inconsistent spellings
+- Named Entity Recognition (NER): identifying personal names and place names in the text
+
+To ensure that the experiments reflected realistic conditions in the humanities, two strict constraints were imposed:
+- All tasks had to be solved solely through prompt engineering, i.e., by optimizing the instructions given to the model rather than training or fine-tuning it.
+- Only small open-source models that run on standard consumer hardware were used, typically up to about 10–12 billion parameters.
+
+This setup reflects the practical limitations common in many humanities research environments.
 
 ## Methodology
-The travel journal of Carl Peter Thunberg from the German Text Archive (DTA) served as the dataset. The source exists at several levels of annotation:
-- scans
-- plain text files
-- XML files with lemmas, POS tags, and NER annotations
+The travel journal of Carl Peter Thunberg (link) from the German Text Archive (DTA) served as the dataset. The source is available at several levels of annotation, which is important because it allows for realistic simulations of the individual tasks:
+scans
+plain text files
+XML files with lemmas, POS tags, and NER annotations
 
-This allowed realistic simulations of the individual task areas and precise comparisons with ground truth data.
+This structure enabled precise comparisons with ground truth data. To control the experiments, a master JSON file was created containing both the model inputs and the reference data for evaluation.
 
-A master JSON file was created to control the experiments, containing both model inputs and reference data for evaluation.
+(JSON-scheme)
 
 After testing several lightweight models, the following proved most reliable:
 - Gemma 3 (12B) – for language tasks
 - Gwen 2.5-VL (3B) – vision model for OCR-like tasks
-Both ran locally through Ollama and were automated using Python.
-A central methodological component was the strict control of output formats using Pydantic, which forced the LLMs to produce consistent, machine-readable JSON.
-Because small models can process only limited amounts of tokens, the corpus was processed sentence by sentence. In total, 6,058 model requests were necessary.
+Both models ran locally through Ollama (link) and were automated using their Python library. A central methodological component was the strict control of output formats with Pydantic (link), which ensured that the LLMs produced consistent, machine-readable JSON outputs. Since small models can process only a limited number of tokens at a time, the corpus was processed sentence by sentence. In total, 6,058 model requests were required to process the entire text.
+
+(Pydantic scheme)
 
 ## Experiment 1: Orthographic Normalization
-**Objective:** convert historical spellings into modern German without altering content.
+**Objective:** Convert historical spellings into modern German without altering the content. This is necessary because modern NLP tools often struggle with unknown spellings and inconsistent orthography.
+
 The model received explicit rules:
 - modernize only spelling and typography
 - no synonyms or paraphrasing
 - do not change proper names
 Examples from a second report by the author were provided to clarify the task.
+
+(Prompt)
 
 ### Results
 **Positive**
@@ -69,6 +74,8 @@ Under these conditions, LLM-based normalization is not useful. Rule-based tool
 - faster
 - more consistent
 - easier to control
+
+To achieve meaningful results with LLMs, it would be necessary to provide at least some form of explicit rule set in addition to the model prompts.
 
 ## Experiment 2: OCR Analysis with a Vision LLM
 **Objective:** convert historical book pages directly into machine-readable text without classical OCR.
@@ -89,6 +96,8 @@ complex layouts caused complete failure
 unwanted orthographic modernization
 model was maxed out by the task, allowing only very short prompts
 
+(Comparison)
+
 ### Conclusion
 Vision LLMs show potential but are:
 not reliable enough in this setup
@@ -96,22 +105,22 @@ overwhelmed by complex layouts
 Larger models or stronger hardware would likely perform much better.
 
 ## Experiment 3: Named Entity Recognition (NER)
-**Objective:** detect all personal and place names.
+**Objective:** Detect all personal and place names. Identifying persons and place names is often the easiest way to gain an understanding of a text’s content without the need for full annotation. This task is challenging due to historical names, varying spellings, and ambiguous context.
 
 NER is crucial for:
 - databases
 - knowledge graphs
 - geographic analyses
 - network analyses of historical actors
-Challenges include historical names, varying spellings, and ambiguous context.
 
 Because combined extraction of persons and places performed poorly, two separate runs were executed.
-
-Rules were precisely defined (with ICL examples):
+Rules were precisely defined, with example cases provided to guide the model’s behavior:
 - mark only personal names / only place names
 - ignore titles, professions, roles
 - ignore general terms
-Evaluation was done using DTA XML annotations (hits, missing, false positives).
+The evaluation was performed by comparing the model outputs with the reference data from the master JSON file, measuring hits, missing entries, and false positives.
+
+(Prompt)
 
 ### Results
 **Pro**
@@ -123,6 +132,8 @@ Evaluation was done using DTA XML annotations (hits, missing, false positives).
   -> place names: Japanese, town, island → falsely treated as proper names
   -> personal names: king, emperor, governor → treated as valid persons
 - occasional extreme outliers (hundreds of hallucinated names)
+
+(Graph)
 
 ### Conclusion
 LLM-based NER is not practical under these conditions. Classical tools (e.g., spaCy) remain:
@@ -155,12 +166,12 @@ Despite their limitations, LLMs offer promising perspectives:
 Format validation tools such as Pydantic greatly improve stability.
 
 **Specialized Agents**
-Models like Qwen2.5-VL show potential in image handling and format conversion.
+Models, such as Qwen2.5-VL, show potential in specific areas, including image processing and format conversion.
 
 **Better Accessibility**
 There is a strong need for graphical interfaces so that researchers can use LLM workflows without deep technical knowledge.
 
 ## TL;DR
-- LLMs show potential for certain tasks in the Digital Humanities
--  Under realistic conditions, however, they remain unreliable, inconsistent, and inefficient. Classical tools continue to be indispensable.
-- LLMs become most useful when combined with structured tools and clearly defined output formats (e.g., Pydantic).
+LLMs show potential for certain tasks in the Digital Humanities.
+Under realistic conditions, however, they remain unreliable, inconsistent, and inefficient; classical tools continue to be indispensable.
+LLMs are most effective when combined with structured tools and clearly defined output formats (e.g., Pydantic).
