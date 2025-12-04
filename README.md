@@ -1,4 +1,4 @@
-# LLMs for Automated Text Analysis in the Digital Humanities
+# # <!-- spacer -->
 
 ## Introduction: Digitizing Historical Texts
 
@@ -48,8 +48,6 @@ plain text files
 XML files with lemmas, POS tags, and NER annotations
 
 This structure enabled precise comparisons with ground truth data. To control the experiments, a master JSON file was created containing both the model inputs and the reference data for evaluation.
-
-(JSON-scheme)
 
 After testing several lightweight models, the following proved most reliable:
 - [Gemma 3 (12B)](https://ollama.com/library/gemma3#:~:text=Gemma%20is%20a%20light) – for language tasks
@@ -147,6 +145,7 @@ The evaluation was performed by comparing the model outputs with the reference d
 ### Results
 **Pro**
 - very high recall: over 93% of actual names found
+
 **Contra**
 - extremely high number of false positives
   -> personal names: 885 incorrect vs. 422 correct
@@ -161,7 +160,7 @@ The evaluation was performed by comparing the model outputs with the reference d
 </figure>
 
 ### Conclusion
-LLM-based NER is not practical under these conditions. Classical tools (e.g., spaCy) remain:
+LLM-based NER is not practical under these conditions. Classical tools (e.g., [spaCy](https://spacy.io)) remain:
 - faster
 - more consistent
 - far easier to control
