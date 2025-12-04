@@ -5,7 +5,7 @@
 The digitization of historical texts is one of the central and at the same time most demanding tasks in the Digital Humanities. The path from a physical document to a machine-readable digital version involves a series of coordinated steps: scanning the pages, performing OCR (Optical Character Recognition), correcting errors, normalizing historical spellings, and processing the text at the word level (e.g., tokenization or lemmatization) before it can be used for further analysis.
 The goal of this pipeline is to enable distant reading – an approach in which large text corpora are analyzed automatically without researchers having to manually read every page. This is essential for extensive source collections.
 
-(Illustration)
+![Digitization Pipeline](/pahaul.github.io/assets/images/image1.png)
 
 Many of the required steps are complicated, error-prone, and require either specialized technical knowledge or substantial resources. The digitization of historical prints is particularly challenging for several reasons:
 - outdated and inconsistent spelling conventions
@@ -29,8 +29,10 @@ To ensure that the experiments reflected realistic conditions in the humanities,
 
 This setup reflects the practical limitations common in many humanities research environments.
 
+![Digitization Pipeline](/pahaul.github.io/assets/images/image2.png)
+
 ## Methodology
-The travel journal of Carl Peter Thunberg (link) from the German Text Archive (DTA) served as the dataset. The source is available at several levels of annotation, which is important because it allows for realistic simulations of the individual tasks:
+The [travel journal of Carl Peter Thunberg](https://www.deutschestextarchiv.de/book/show/thunberg_reisen02_1794) from the German Text Archive (DTA) served as the dataset. The source is available at several levels of annotation, which is important because it allows for realistic simulations of the individual tasks:
 scans
 plain text files
 XML files with lemmas, POS tags, and NER annotations
@@ -40,9 +42,9 @@ This structure enabled precise comparisons with ground truth data. To control th
 (JSON-scheme)
 
 After testing several lightweight models, the following proved most reliable:
-- Gemma 3 (12B) – for language tasks
-- Gwen 2.5-VL (3B) – vision model for OCR-like tasks
-Both models ran locally through Ollama (link) and were automated using their Python library. A central methodological component was the strict control of output formats with Pydantic (link), which ensured that the LLMs produced consistent, machine-readable JSON outputs. Since small models can process only a limited number of tokens at a time, the corpus was processed sentence by sentence. In total, 6,058 model requests were required to process the entire text.
+- [Gemma 3 (12B)](https://ollama.com/library/gemma3#:~:text=Gemma%20is%20a%20light) – for language tasks
+- [Gwen 2.5-VL (3B)](https://github.com/QwenLM/Qwen3-VL?tab=readme-ov-file) – vision model for OCR-like tasks
+Both models ran locally through [Ollama](https://github.com/ollama/ollama) and were automated using their Python library. A central methodological component was the strict control of output formats with [Pydantic](https://ollama.com/blog/structured-outputs#:~:text=PythonUsing%20the%20Ollama%20Python%20library%2C%20pass%20in%20the%20schema%20as%20a%20JSON%20object%20to%20the%20format%20parameter%20as%20either%20dict%20or%20use%20Pydantic%20(recommended)%20to%20serialize%20the%20schema%20using%20model_json_schema().), which ensured that the LLMs produced consistent, machine-readable JSON outputs. Since small models can process only a limited number of tokens at a time, the corpus was processed sentence by sentence. In total, 6,058 model requests were required to process the entire text.
 
 (Pydantic scheme)
 
