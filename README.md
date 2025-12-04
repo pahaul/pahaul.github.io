@@ -1,4 +1,4 @@
-# <span style="visibility:hidden; height:0; margin:0; padding:0;">H</span>
+# <span style="visibility:hidden; height:0; margin:0; padding:0;"></span>
 
 ## Introduction: Digitizing Historical Texts
 
