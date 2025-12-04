@@ -1,4 +1,4 @@
-# # <!-- spacer -->
+# <span style="visibility:hidden; height:0; margin:0; padding:0;">H</span>
 
 ## Introduction: Digitizing Historical Texts
 
