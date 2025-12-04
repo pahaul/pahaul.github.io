@@ -5,7 +5,10 @@
 The digitization of historical texts is one of the central and at the same time most demanding tasks in the Digital Humanities. The path from a physical document to a machine-readable digital version involves a series of coordinated steps: scanning the pages, performing OCR (Optical Character Recognition), correcting errors, normalizing historical spellings, and processing the text at the word level (e.g., tokenization or lemmatization) before it can be used for further analysis.
 The goal of this pipeline is to enable distant reading – an approach in which large text corpora are analyzed automatically without researchers having to manually read every page. This is essential for extensive source collections.
 
-![Digitization Pipeline](/assets/images/image1.png)
+<figure>
+  <img src="/assets/images/image1.png" alt="Beschreibung">
+  <figcaption>Figure 1: Illustrative overview of a typical digitalization workflow for historical texts.</figcaption>
+</figure>
 
 Many of the required steps are complicated, error-prone, and require either specialized technical knowledge or substantial resources. The digitization of historical prints is particularly challenging for several reasons:
 - outdated and inconsistent spelling conventions
@@ -31,7 +34,10 @@ To ensure that the experiments reflected realistic conditions in the humanities,
 
 This setup reflects the practical limitations common in many humanities research environments.
 
-![Digitization Pipeline](/assets/images/image2.png)
+<figure>
+  <img src="/assets/images/image2.png" alt="Beschreibung">
+  <figcaption>Figure 2: Overview of the LLM-based processing pipeline used in the experiments.</figcaption>
+</figure>
 
 ---
 
@@ -50,8 +56,6 @@ After testing several lightweight models, the following proved most reliable:
 - [Gwen 2.5-VL (3B)](https://github.com/QwenLM/Qwen3-VL?tab=readme-ov-file) – vision model for OCR-like tasks
 Both models ran locally through [Ollama](https://github.com/ollama/ollama) and were automated using their Python library. A central methodological component was the strict control of output formats with [Pydantic](https://ollama.com/blog/structured-outputs#:~:text=PythonUsing%20the%20Ollama%20Python%20library%2C%20pass%20in%20the%20schema%20as%20a%20JSON%20object%20to%20the%20format%20parameter%20as%20either%20dict%20or%20use%20Pydantic%20(recommended)%20to%20serialize%20the%20schema%20using%20model_json_schema().), which ensured that the LLMs produced consistent, machine-readable JSON outputs. Since small models can process only a limited number of tokens at a time, the corpus was processed sentence by sentence. In total, 6,058 model requests were required to process the entire text.
 
-(Pydantic scheme)
-
 ---
 
 ## Experiment 1: Orthographic Normalization
@@ -63,7 +67,10 @@ The model received explicit rules:
 - do not change proper names
 Examples from a second report by the author were provided to clarify the task.
 
-(Prompt)
+<figure>
+  <img src="/assets/images/image3.png" alt="Beschreibung">
+  <figcaption>Figure 3: Original German prompt used for orthographic normalization.</figcaption>
+</figure>
 
 ### Results
 **Positive**
@@ -132,7 +139,10 @@ Rules were precisely defined, with example cases provided to guide the model’s
 - ignore general terms
 The evaluation was performed by comparing the model outputs with the reference data from the master JSON file, measuring hits, missing entries, and false positives.
 
-(Prompt)
+<figure>
+  <img src="/assets/images/image4.png" alt="Beschreibung">
+  <figcaption>Figure 4: Original German prompt used for place-name extraction (NER).</figcaption>
+</figure>
 
 ### Results
 **Pro**
@@ -145,7 +155,10 @@ The evaluation was performed by comparing the model outputs with the reference d
   -> personal names: king, emperor, governor → treated as valid persons
 - occasional extreme outliers (hundreds of hallucinated names)
 
-(Graph)
+<figure>
+  <img src="/assets/images/image5.png" alt="Beschreibung">
+  <figcaption>Figure 5: Evaluation results for the NER experiment: number of hits, missing entries, and false positives.</figcaption>
+</figure>
 
 ### Conclusion
 LLM-based NER is not practical under these conditions. Classical tools (e.g., spaCy) remain:
@@ -186,6 +199,8 @@ Models, such as Qwen2.5-VL, show potential in specific areas, including image pr
 
 **Better Accessibility**
 There is a strong need for graphical interfaces so that researchers can use LLM workflows without deep technical knowledge.
+
+---
 
 ## TL;DR
 LLMs show potential for certain tasks in the Digital Humanities.
