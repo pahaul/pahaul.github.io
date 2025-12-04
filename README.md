@@ -13,6 +13,8 @@ Many of the required steps are complicated, error-prone, and require either spec
 - suitable training data are rarely available
 As a result, source-specific adjustments often have to be developed.
 
+---
+
 ## Objective of the Study
 Given these challenges, Large Language Models (LLMs) are coming into focus as a flexible alternative. They are optimized for processing natural language and could supplement or replace classical, often rigid methods and simplify the entire process.
 
@@ -31,6 +33,8 @@ This setup reflects the practical limitations common in many humanities research
 
 ![Digitization Pipeline](/assets/images/image2.png)
 
+---
+
 ## Methodology
 The [travel journal of Carl Peter Thunberg](https://www.deutschestextarchiv.de/book/show/thunberg_reisen02_1794) from the German Text Archive (DTA) served as the dataset. The source is available at several levels of annotation, which is important because it allows for realistic simulations of the individual tasks:
 scans
@@ -47,6 +51,8 @@ After testing several lightweight models, the following proved most reliable:
 Both models ran locally through [Ollama](https://github.com/ollama/ollama) and were automated using their Python library. A central methodological component was the strict control of output formats with [Pydantic](https://ollama.com/blog/structured-outputs#:~:text=PythonUsing%20the%20Ollama%20Python%20library%2C%20pass%20in%20the%20schema%20as%20a%20JSON%20object%20to%20the%20format%20parameter%20as%20either%20dict%20or%20use%20Pydantic%20(recommended)%20to%20serialize%20the%20schema%20using%20model_json_schema().), which ensured that the LLMs produced consistent, machine-readable JSON outputs. Since small models can process only a limited number of tokens at a time, the corpus was processed sentence by sentence. In total, 6,058 model requests were required to process the entire text.
 
 (Pydantic scheme)
+
+---
 
 ## Experiment 1: Orthographic Normalization
 **Objective:** Convert historical spellings into modern German without altering the content. This is necessary because modern NLP tools often struggle with unknown spellings and inconsistent orthography.
@@ -79,6 +85,8 @@ Under these conditions, LLM-based normalization is not useful. Rule-based tool
 
 To achieve meaningful results with LLMs, it would be necessary to provide at least some form of explicit rule set in addition to the model prompts.
 
+---
+
 ## Experiment 2: OCR Analysis with a Vision LLM
 **Objective:** convert historical book pages directly into machine-readable text without classical OCR.
 
@@ -105,6 +113,8 @@ Vision LLMs show potential but are:
 not reliable enough in this setup
 overwhelmed by complex layouts
 Larger models or stronger hardware would likely perform much better.
+
+---
 
 ## Experiment 3: Named Entity Recognition (NER)
 **Objective:** Detect all personal and place names. Identifying persons and place names is often the easiest way to gain an understanding of a text’s content without the need for full annotation. This task is challenging due to historical names, varying spellings, and ambiguous context.
@@ -143,6 +153,8 @@ LLM-based NER is not practical under these conditions. Classical tools (e.g., 
 - more consistent
 - far easier to control
 
+---
+
 ## Overall Result
 The thesis arrives at a clear but sobering conclusion:
 
@@ -160,6 +172,8 @@ More modern tools are not always better. The normalization of historical texts w
 ### 2. Resource Limitations of Small Models
 - actual token limits often unclear
 - vision LLMs break easily when tasks become slightly more complex
+
+---
 
 ## Outlook: Where Does the Potential Lie?
 Despite their limitations, LLMs offer promising perspectives:
