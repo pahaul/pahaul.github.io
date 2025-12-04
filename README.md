@@ -5,7 +5,7 @@
 The digitization of historical texts is one of the central and at the same time most demanding tasks in the Digital Humanities. The path from a physical document to a machine-readable digital version involves a series of coordinated steps: scanning the pages, performing OCR (Optical Character Recognition), correcting errors, normalizing historical spellings, and processing the text at the word level (e.g., tokenization or lemmatization) before it can be used for further analysis.
 The goal of this pipeline is to enable distant reading – an approach in which large text corpora are analyzed automatically without researchers having to manually read every page. This is essential for extensive source collections.
 
-![Digitization Pipeline](/pahaul.github.io/assets/images/image1.png)
+![Digitization Pipeline](/assets/images/image1.png)
 
 Many of the required steps are complicated, error-prone, and require either specialized technical knowledge or substantial resources. The digitization of historical prints is particularly challenging for several reasons:
 - outdated and inconsistent spelling conventions
@@ -29,7 +29,7 @@ To ensure that the experiments reflected realistic conditions in the humanities,
 
 This setup reflects the practical limitations common in many humanities research environments.
 
-![Digitization Pipeline](/pahaul.github.io/assets/images/image2.png)
+![Digitization Pipeline](/assets/images/image2.png)
 
 ## Methodology
 The [travel journal of Carl Peter Thunberg](https://www.deutschestextarchiv.de/book/show/thunberg_reisen02_1794) from the German Text Archive (DTA) served as the dataset. The source is available at several levels of annotation, which is important because it allows for realistic simulations of the individual tasks:
